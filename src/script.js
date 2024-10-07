@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let isGameActive = false; // Track if the Snake game is active
   let musicPlaying = false; // Track if the music is playing
   let musicElement; // Store the music element reference
+  let totalLosses = 0; // Track total losses
 
   // Function to highlight the selected menu item
   function highlightMenuItem(index) {
@@ -30,6 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <h2>Snake Game</h2>
         <canvas id="snake-game-canvas" width="300" height="300"></canvas>
         <p>Score: <span id="current-score">0</span></p>
+        <p>Attempts: <span id="loss-count">${totalLosses}</span></p> <!-- Add losses display -->
         <p id="game-over-message" style="display:none;">Game Over! Final Score: <span id="final-score">0</span></p>
         <button id="reset-game">Reset Game</button>
         <button id="close-popup">Close</button>
@@ -85,6 +87,8 @@ document.addEventListener("DOMContentLoaded", () => {
         )
       ) {
         clearInterval(gameInterval); // End the game
+        totalLosses++; // Increment the loss count
+        document.getElementById("loss-count").textContent = totalLosses; // Update the loss display
         endGame();
         return;
       }
@@ -146,9 +150,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // Attach the snake control event only when the game is active
     document.addEventListener("keydown", handleSnakeControls);
 
-    // Reset button functionality (reset game but keep score)
+    // Reset button functionality (reset game but keep score and losses)
     document.getElementById("reset-game").addEventListener("click", () => {
-      initializeGame(false); // Reset the game, but keep the score
+      initializeGame(false); // Reset the game, but keep the score and loss count
     });
 
     // Close popup functionality
@@ -180,7 +184,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.appendChild(popup);
 
     // Create audio element for the music
-    musicElement = new Audio("../music/House Of The Rising Sun.mp3"); // Replace with the actual path to your music file
+    musicElement = new Audio("your-music-file.mp3"); // Replace with the actual path to your music file
 
     const playMusicButton = document.getElementById("play-music");
     const pauseMusicButton = document.getElementById("pause-music");
