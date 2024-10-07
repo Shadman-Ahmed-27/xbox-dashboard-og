@@ -180,7 +180,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.appendChild(popup);
 
     // Create audio element for the music
-    musicElement = new Audio("../music/House Of The Rising Sun.mp3"); //song plays on click
+    musicElement = new Audio("../music/House Of The Rising Sun.mp3"); // Replace with the actual path to your music file
 
     const playMusicButton = document.getElementById("play-music");
     const pauseMusicButton = document.getElementById("pause-music");
@@ -208,6 +208,11 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       document.body.removeChild(popup);
     });
+  }
+
+  // Function to redirect to Xbox Live website
+  function goToXboxLive() {
+    window.location.href = "https://www.xbox.com/en-US/live"; // Redirect to Xbox Live
   }
 
   // Function to close any existing popups
@@ -240,6 +245,8 @@ document.addEventListener("DOMContentLoaded", () => {
           showSnakeGame(); // Show Snake game if "Memory" is selected
         } else if (selectedItem === "Music") {
           showMusicPlayer(); // Show Music Player if "Music" is selected
+        } else if (selectedItem === "Xbox Live") {
+          goToXboxLive(); // Redirect to Xbox Live website
         } else {
           console.log(`Selected: ${selectedItem}`);
         }
@@ -262,6 +269,11 @@ document.addEventListener("DOMContentLoaded", () => {
     // Add click event to "Music" for opening the Music player
     if (item.textContent === "Music") {
       item.addEventListener("click", showMusicPlayer);
+    }
+
+    // Add click event to "Xbox Live" to go to the website
+    if (item.textContent === "Xbox Live") {
+      item.addEventListener("click", goToXboxLive);
     }
   });
 
