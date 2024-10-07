@@ -2,6 +2,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const menuItems = document.querySelectorAll("#menu li");
   let currentIndex = 0;
   let gameInterval;
+  let isGameActive = false; // Track if the Snake game is active
+  let musicPlaying = false; // Track if the music is playing
+  let musicElement; // Store the music element reference
 
   // Function to highlight the selected menu item
   function highlightMenuItem(index) {
@@ -17,6 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Function to create and display the Snake game
   function showSnakeGame() {
     closeExistingPopups(); // Close any existing popup first
+    isGameActive = true; // Snake game is now active
 
     const popup = document.createElement("div");
     popup.id = "game-popup";
@@ -26,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <h2>Snake Game</h2>
         <canvas id="snake-game-canvas" width="300" height="300"></canvas>
         <p>Score: <span id="current-score">0</span></p>
-        <p id="game-over-message" style="display:none;">Game Over! Final Score: <span id="final-score"></span></p>
+        <p id="game-over-message" style="display:none;">Game Over! Final Score: <span id="final-score">0</span></p>
         <button id="reset-game">Reset Game</button>
         <button id="close-popup">Close</button>
       </div>
@@ -38,20 +42,22 @@ document.addEventListener("DOMContentLoaded", () => {
     let score = 0;
     let snake, direction, food;
 
-    // Function to initialize or reset the game
-    function initializeGame() {
+    // Function to initialize the game
+    function initializeGame(resetScore = false) {
       document.getElementById("game-over-message").style.display = "none"; // Hide Game Over message
       snake = [{ x: 150, y: 150 }];
       direction = { x: 10, y: 0 }; // Snake starts moving to the right
       food = getRandomFoodPosition();
-      score = 0;
+      if (resetScore) {
+        score = 0; // Only reset score if explicitly asked
+      }
       document.getElementById("current-score").textContent = score;
       clearInterval(gameInterval);
       gameInterval = setInterval(gameLoop, 100); // Restart the game loop
     }
 
     // Start the game for the first time
-    initializeGame();
+    initializeGame(false); // Do not reset score on initial start
 
     // Function to get a random food position
     function getRandomFoodPosition() {
@@ -89,6 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (newHead.x === food.x && newHead.y === food.y) {
         score++;
         document.getElementById("current-score").textContent = score; // Update score display
+        document.getElementById("final-score").textContent = score; // Update final score
         food = getRandomFoodPosition(); // Generate new food position
       } else {
         snake.pop(); // Remove the tail if no food is eaten
@@ -109,34 +116,39 @@ document.addEventListener("DOMContentLoaded", () => {
     // Function to handle the end of the game
     function endGame() {
       document.getElementById("game-over-message").style.display = "block"; // Show Game Over message
-      document.getElementById("final-score").textContent = score; // Show final score
     }
 
-    // Handle keyboard input for controlling the snake
-    document.addEventListener("keydown", (event) => {
-      switch (event.key) {
-        case "ArrowUp":
-        case "w":
-          if (direction.y === 0) direction = { x: 0, y: -10 };
-          break;
-        case "ArrowDown":
-        case "s":
-          if (direction.y === 0) direction = { x: 0, y: 10 };
-          break;
-        case "ArrowLeft":
-        case "a":
-          if (direction.x === 0) direction = { x: -10, y: 0 };
-          break;
-        case "ArrowRight":
-        case "d":
-          if (direction.x === 0) direction = { x: 10, y: 0 };
-          break;
+    // Snake game keydown event handler (for WASD/Arrow keys)
+    function handleSnakeControls(event) {
+      if (isGameActive) {
+        // Only process controls if the game is active
+        switch (event.key) {
+          case "ArrowUp":
+          case "w":
+            if (direction.y === 0) direction = { x: 0, y: -10 };
+            break;
+          case "ArrowDown":
+          case "s":
+            if (direction.y === 0) direction = { x: 0, y: 10 };
+            break;
+          case "ArrowLeft":
+          case "a":
+            if (direction.x === 0) direction = { x: -10, y: 0 };
+            break;
+          case "ArrowRight":
+          case "d":
+            if (direction.x === 0) direction = { x: 10, y: 0 };
+            break;
+        }
       }
-    });
+    }
 
-    // Reset button functionality
+    // Attach the snake control event only when the game is active
+    document.addEventListener("keydown", handleSnakeControls);
+
+    // Reset button functionality (reset game but keep score)
     document.getElementById("reset-game").addEventListener("click", () => {
-      initializeGame(); // Reset the game when the button is clicked
+      initializeGame(false); // Reset the game, but keep the score
     });
 
     // Close popup functionality
@@ -144,6 +156,57 @@ document.addEventListener("DOMContentLoaded", () => {
     closePopupButton.addEventListener("click", () => {
       document.body.removeChild(popup);
       clearInterval(gameInterval); // Stop the game loop when closing the popup
+      document.removeEventListener("keydown", handleSnakeControls); // Remove snake controls when the game closes
+      isGameActive = false; // Game is no longer active
+    });
+  }
+
+  // Function to create and display the Music Player
+  function showMusicPlayer() {
+    closeExistingPopups(); // Close any existing popup first
+
+    const popup = document.createElement("div");
+    popup.id = "music-popup";
+
+    popup.innerHTML = `
+      <div class="popup-content">
+        <h2>Music Player</h2>
+        <p>Play your favorite tunes!</p>
+        <button id="play-music">Play Music</button>
+        <button id="pause-music" disabled>Pause Music</button>
+        <button id="close-popup">Close</button>
+      </div>
+    `;
+    document.body.appendChild(popup);
+
+    // Create audio element for the music
+    musicElement = new Audio("../music/House Of The Rising Sun.mp3"); //song plays on click
+
+    const playMusicButton = document.getElementById("play-music");
+    const pauseMusicButton = document.getElementById("pause-music");
+
+    playMusicButton.addEventListener("click", () => {
+      musicElement.play();
+      playMusicButton.disabled = true;
+      pauseMusicButton.disabled = false;
+      musicPlaying = true;
+    });
+
+    pauseMusicButton.addEventListener("click", () => {
+      musicElement.pause();
+      playMusicButton.disabled = false;
+      pauseMusicButton.disabled = true;
+      musicPlaying = false;
+    });
+
+    // Close popup functionality
+    const closePopupButton = document.getElementById("close-popup");
+    closePopupButton.addEventListener("click", () => {
+      if (musicPlaying) {
+        musicElement.pause();
+        musicPlaying = false;
+      }
+      document.body.removeChild(popup);
     });
   }
 
@@ -153,25 +216,34 @@ document.addEventListener("DOMContentLoaded", () => {
     if (existingPopup) {
       document.body.removeChild(existingPopup);
     }
+
+    if (isGameActive) {
+      clearInterval(gameInterval); // Stop the game loop
+      document.removeEventListener("keydown", handleSnakeControls); // Remove snake controls when popup is closed
+      isGameActive = false;
+    }
   }
 
-  // Keyboard (Arrow + WASD) navigation
+  // Keyboard (Arrow + WASD) navigation for the menu (only works when the game is not active)
   document.addEventListener("keydown", (event) => {
-    if (event.key === "ArrowDown" || event.key.toLowerCase() === "s") {
-      currentIndex = (currentIndex + 1) % menuItems.length;
-      highlightMenuItem(currentIndex);
-    } else if (event.key === "ArrowUp" || event.key.toLowerCase() === "w") {
-      currentIndex = (currentIndex - 1 + menuItems.length) % menuItems.length;
-      highlightMenuItem(currentIndex);
-    } else if (event.key === "Enter" || event.key.toLowerCase() === "a") {
-      const selectedItem = menuItems[currentIndex].textContent;
-      if (selectedItem === "Memory") {
-        showSnakeGame(); // Show Snake game if "Memory" is selected
-      } else {
-        console.log(`Selected: ${selectedItem}`);
+    if (!isGameActive) {
+      // Only navigate the menu when the game is not active
+      if (event.key === "ArrowDown" || event.key.toLowerCase() === "s") {
+        currentIndex = (currentIndex + 1) % menuItems.length;
+        highlightMenuItem(currentIndex);
+      } else if (event.key === "ArrowUp" || event.key.toLowerCase() === "w") {
+        currentIndex = (currentIndex - 1 + menuItems.length) % menuItems.length;
+        highlightMenuItem(currentIndex);
+      } else if (event.key === "Enter" || event.key.toLowerCase() === "a") {
+        const selectedItem = menuItems[currentIndex].textContent;
+        if (selectedItem === "Memory") {
+          showSnakeGame(); // Show Snake game if "Memory" is selected
+        } else if (selectedItem === "Music") {
+          showMusicPlayer(); // Show Music Player if "Music" is selected
+        } else {
+          console.log(`Selected: ${selectedItem}`);
+        }
       }
-    } else if (event.key.toLowerCase() === "d") {
-      console.log(`D key pressed, no action yet`);
     }
   });
 
@@ -185,6 +257,11 @@ document.addEventListener("DOMContentLoaded", () => {
     // Add click event to "Memory" for opening the Snake game
     if (item.textContent === "Memory") {
       item.addEventListener("click", showSnakeGame);
+    }
+
+    // Add click event to "Music" for opening the Music player
+    if (item.textContent === "Music") {
+      item.addEventListener("click", showMusicPlayer);
     }
   });
 
