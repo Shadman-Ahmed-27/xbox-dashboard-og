@@ -1,0 +1,189 @@
+/* styles.css */
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #003300; /* Dark green background */
+  color: #00ff00; /* Neon green text */
+  font-family: "Orbitron", sans-serif; /* A techy font similar to the original */
+}
+
+#startup-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Xbox glowing logo */
+#xbox-logo {
+  width: 200px;
+  height: 200px;
+  background: url("xbox-logo.png") no-repeat center;
+  background-size: contain;
+  position: relative;
+  animation: spin 6s linear infinite; /* Slow spinning effect */
+}
+
+#xbox-logo .glow {
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: rgba(0, 255, 0, 0.2);
+  position: absolute;
+  top: -50px;
+  left: -50px;
+  filter: blur(15px);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Glowing pulse effect */
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}
+
+/* Slow spinning logo */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Menu styles */
+#menu {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+  text-align: center;
+}
+
+#menu li {
+  font-size: 28px;
+  margin: 10px 0;
+  padding: 10px;
+  color: #00ff00;
+  border: 1px solid transparent;
+  transition: color 0.3s, border 0.3s;
+  cursor: default;
+}
+
+/* Highlighted menu item */
+#menu li.selected {
+  color: #ffff00; /* Yellow to show the selected item */
+  border: 1px solid #00ff00; /* Neon green border */
+}
+
+/* Add hover effect for menu options */
+#menu li:hover {
+  color: #ffff00; /* Same yellow color as the selected state */
+  border: 1px solid #00ff00; /* Neon green border */
+  cursor: pointer; /* Change the cursor to pointer */
+}
+
+/* Select button */
+#select-button {
+  position: absolute;
+  bottom: 50px;
+  font-size: 24px;
+  color: #00ff00;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.select-text {
+  background: #00ff00;
+  color: #003300;
+  padding: 10px;
+  border-radius: 50%;
+  font-size: 20px;
+}
+
+/* styles.css */
+
+/* styles.css */
+
+#game-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  background-color: #333;
+  border: 2px solid #00ff00;
+  padding: 20px;
+  z-index: 1000;
+  color: #00ff00;
+  text-align: center;
+  font-family: "Orbitron", sans-serif;
+}
+
+.popup-content {
+  position: relative;
+}
+
+#clicker-button {
+  margin: 10px 0;
+  padding: 10px;
+  font-size: 16px;
+  color: #003300;
+  background-color: #00ff00;
+  border: none;
+  cursor: pointer;
+}
+
+#close-popup {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 14px;
+  color: #003300;
+  background-color: #00ff00;
+  border: none;
+  cursor: pointer;
+}
+
+#score {
+  font-size: 24px;
+  color: #ffff00;
+}
+
+#music-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  background-color: #333;
+  border: 2px solid #00ff00;
+  padding: 20px;
+  z-index: 1000;
+  color: #00ff00;
+  text-align: center;
+  font-family: "Orbitron", sans-serif;
+}
+
+#play-music,
+#pause-music,
+#close-popup {
+  margin-top: 10px;
+  padding: 10px;
+  font-size: 14px;
+  color: #003300;
+  background-color: #00ff00;
+  border: none;
+  cursor: pointer;
+}
