@@ -113,7 +113,7 @@ body {
   font-size: 20px;
 }
 
-/* Popup general styles */
+/* Popup styling for both games and music */
 #game-popup,
 #music-popup {
   position: fixed;
@@ -137,10 +137,14 @@ body {
   margin: 10px auto;
 }
 
-/* Popup buttons */
-#play-music,
-#pause-music,
-#clicker-button,
+/* Current score display for Snake Game */
+#current-score {
+  font-size: 24px;
+  color: #ffff00; /* Yellow color for score */
+}
+
+/* Buttons for resetting the game and closing popups */
+#reset-game,
 #close-popup {
   margin-top: 10px;
   padding: 10px;
@@ -151,14 +155,15 @@ body {
   cursor: pointer;
 }
 
-/* Snake game score */
-#score {
-  font-size: 24px;
-  color: #ffff00;
-}
-
-/* Music player specific */
+/* Music player-specific buttons (reused general button styling) */
 #play-music,
 #pause-music {
   margin-right: 10px;
+}
+
+/* Game Over Message Styling */
+#game-over-message {
+  color: #ff0000; /* Red color for Game Over text */
+  margin-top: 10px;
+  display: none; /* Hidden by default */
 }
