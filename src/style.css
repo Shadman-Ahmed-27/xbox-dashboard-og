@@ -22,7 +22,7 @@ body {
 #xbox-logo {
   width: 200px;
   height: 200px;
-  background: url("xbox-logo.png") no-repeat center;
+  background: url("../images/xboxlogo.jpg") no-repeat center;
   background-size: contain;
   position: relative;
   animation: spin 6s linear infinite; /* Slow spinning effect */
@@ -113,60 +113,14 @@ body {
   font-size: 20px;
 }
 
-/* styles.css */
-
-/* styles.css */
-
-#game-popup {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 300px;
-  background-color: #333;
-  border: 2px solid #00ff00;
-  padding: 20px;
-  z-index: 1000;
-  color: #00ff00;
-  text-align: center;
-  font-family: "Orbitron", sans-serif;
-}
-
-.popup-content {
-  position: relative;
-}
-
-#clicker-button {
-  margin: 10px 0;
-  padding: 10px;
-  font-size: 16px;
-  color: #003300;
-  background-color: #00ff00;
-  border: none;
-  cursor: pointer;
-}
-
-#close-popup {
-  margin-top: 20px;
-  padding: 10px 20px;
-  font-size: 14px;
-  color: #003300;
-  background-color: #00ff00;
-  border: none;
-  cursor: pointer;
-}
-
-#score {
-  font-size: 24px;
-  color: #ffff00;
-}
-
+/* Popup general styles */
+#game-popup,
 #music-popup {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 300px;
+  width: 320px;
   background-color: #333;
   border: 2px solid #00ff00;
   padding: 20px;
@@ -176,8 +130,17 @@ body {
   font-family: "Orbitron", sans-serif;
 }
 
+/* Snake Game Canvas */
+#snake-game-canvas {
+  display: block;
+  background-color: #000;
+  margin: 10px auto;
+}
+
+/* Popup buttons */
 #play-music,
 #pause-music,
+#clicker-button,
 #close-popup {
   margin-top: 10px;
   padding: 10px;
@@ -186,4 +149,16 @@ body {
   background-color: #00ff00;
   border: none;
   cursor: pointer;
+}
+
+/* Snake game score */
+#score {
+  font-size: 24px;
+  color: #ffff00;
+}
+
+/* Music player specific */
+#play-music,
+#pause-music {
+  margin-right: 10px;
 }
